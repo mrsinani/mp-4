@@ -6,13 +6,14 @@ import styled from "styled-components";
 import ExchangeCard from "@/app/components/ExchangeCard";
 import { ConversionResult } from "@/app/interfaces/exchange";
 import Link from "next/link";
+import { Suspense } from "react";
 
 const ContentWrapper = styled.main`
   width: 80vw;
   margin: auto;
 `;
 
-export default function ConvertPage() {
+function ConvertContent() {
   const searchParams = useSearchParams();
   const from = searchParams.get("from");
   const to = searchParams.get("to");
@@ -53,5 +54,13 @@ export default function ConvertPage() {
       {data && <ExchangeCard data={data} />}
       <Link href="/">Convert another</Link>
     </ContentWrapper>
+  );
+}
+
+export default function ConvertPage() {
+  return (
+    <Suspense fallback={<div>Loading conversion result...</div>}>
+      <ConvertContent />
+    </Suspense>
   );
 }
